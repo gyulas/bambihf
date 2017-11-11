@@ -12,14 +12,16 @@
 
 #define    	char_bal 	98 		//ascii code of 'b'
 #define     char_jobb 	106		//ascii code of 'j'
-#define 	char_lo 		108 	//ascii code of 'j'
+#define     char_k 		107		//ascii code of 'k' to place kacsak manually
+#define 	char_lo 	108 	//ascii code of 'j'
 
 /* 13671 Hz -> 14Mhz (clock frequency) / 1024 (prescaler)
   Setting TOP to 27342 results in an overflow each 2 seconds */
-#define TOP 6835
+//6835 0.5s
+#define TOP 25000
 
 //"state variables"
-typedef enum  {idle=0, jobbrakell,balrakell,lonikell, /*TODO: harder, easier*/} 	inputCommand;
+typedef enum  {idle=0, jobbrakell,balrakell,lonikell, kacsakell /*TODO: harder, easier*/} 	inputCommand;
 typedef enum  { tuzel, golyoRepul, out} 											shootingProcess;			//2 szegmens a golyo utja
 typedef enum  {miss, DED} 															duckState; 	//a lovesnel ezeket vizsgaljuk
 
@@ -35,6 +37,9 @@ SegmentLCD_SegmentData_TypeDef segmentField[7]={0,0,0,0,0,0,0};
 uint8_t volatile ch;
 bool volatile new_char = false;
 bool volatile timer_it = false;
+
+int volatile rndplace;
+bool curr;
 
 
 int vadaszPos;

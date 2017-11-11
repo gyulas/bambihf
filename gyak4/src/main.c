@@ -49,8 +49,7 @@ void TIMER0_IRQHandler(void)
   /* Clear flag for TIMER0 overflow interrupt */
   TIMER_IntClear(TIMER0, TIMER_IF_OF);
 
-  /* Toggle LED ON/OFF */
-  GPIO_PinOutToggle(LED0_PORT, LED0_PIN);
+  timer_it=true;
 }
 
 ///////////////////////////// vadasz functions//////////////////////////
@@ -99,11 +98,10 @@ void vadaszLovesProcess ()
 {
 	// semmi mast nem kellene csinalnia mint elinditani egy lovedeket onnan ahol all
 
-	shootingProcess lovedek;
-	//scanning current state
 	if(0==segmentField[vadaszPos].p){
 		//not shooted yet
-		lovedek=tuzel;
+		//lovedek=tuzel;
+		segmentField[vadaszPos].p=1;
 	}
 	/*else if(1==segmentField[vadaszPos].p){
 		//bullet already started
@@ -123,14 +121,14 @@ void vadaszLovesProcess ()
 		}
 	}
 	*/
-	switch(lovedek){
+	/*switch(lovedek){
 		case tuzel :
 		{
 			segmentField[vadaszPos].p=1; 		// loves elinditasa
 			lovedek=golyoRepul;					// break miatt a kovetkezobe NEM lep be
 			break;
 		}
-		/*case golyoRepul :
+		case golyoRepul :
 		{
 			segmentField[vadaszPos].p=0; 		// golyo leptetese
 			segmentField[vadaszPos].j=1;
@@ -143,7 +141,7 @@ void vadaszLovesProcess ()
 				preda=miss;
 			}
 		}*/
-	} //switch
+	//} //switch
 }
 
 /*void kacsaLeterites ()*/
@@ -174,6 +172,9 @@ void handleNewChar()
 		case char_lo:
 			task=lonikell;
 			break;
+		case char_k:
+			task=kacsakell;
+			break;
 		default:
 			task=idle;
 	}
@@ -200,14 +201,26 @@ void handleNewChar()
 			//GPIO_PinOutSet(LED0_PORT, LED0_PIN);
 			//GPIO_PinOutSet(LED1_PORT, LED1_PIN);
 
-			 	//to perform appropriate cucc in Proc
-			//vadaszLovesProcess();
+			vadaszLovesProcess();
 			displaySegmentField(segmentField);
 			//TODO: flying of the bullet, START A TIMER
-			TIMER_Enable(TIMER0,1);
+			//TIMER_Enable(TIMER0,1);
 
 			break;
 		//}
+		case kacsakell:
+			rndplace = (DWT->CYCCNT)%8;
+			SegmentLCD_ARing(rndplace,1);
+			if(7==rndplace){
+				segmentField[rndplace].a=0;
+			}
+			else{
+				segmentField[rndplace].a=1;
+			}
+
+			//segmentField[rndplace].a=1 lehessen eltuntetni is
+			displaySegmentField(segmentField);
+			break;
 		case idle:
 			break;
 	}//end of switch
@@ -219,26 +232,33 @@ void handleTimerEvent()
 	timer_it=false;
 
 	// ha van repulo lovedek, kezeljuk le
-
-	if(1==segmentField[vadaszPos].p)
+	for(int fields=0;fields<8;fields++)
 	{
-		//bullet already started
-		segmentField[vadaszPos].p=0;
-		segmentField[vadaszPos].j=1;
-	}
-	else if(1==segmentField[vadaszPos].j){
-		segmentField[vadaszPos].j=0;
-		if(1==segmentField[vadaszPos].a)
-		{	//duck there
-										//TODO: counter++ on segment
-			halottMadarak++;
-			//villoghat estleg
-		}
-		else
+		if(1==segmentField[fields].p)
 		{
-			//miss
+			//bullet already started
+			segmentField[fields].p=0;
+			segmentField[fields].j=1;
 		}
+		else if(1==segmentField[fields].j){
+			//bullet at top
+			segmentField[fields].j=0;
+			if(1==segmentField[fields].a)
+			{	//duck there
+											//TODO: counter++ on segment
+				halottMadarak++;
+				SegmentLCD_Number(halottMadarak);
+				segmentField[fields].a=0;
+				//villoghat estleg
+			}
+			else
+			{
+				//miss
+			}
+		}
+
 	}
+	displaySegmentField(segmentField);
 }
 
 int main(void)
@@ -268,6 +288,7 @@ int main(void)
 	vadaszPos=0;
 	halottMadarak=0;
 
+	SegmentLCD_Battery(halottMadarak);
 	while (1) {
 			EMU_EnterEM1();
 			if (new_char) {
@@ -277,6 +298,5 @@ int main(void)
 			{
 				handleTimerEvent();
 			}
-
   }
 }
