@@ -1,4 +1,5 @@
-src/InitDevice.o: ../src/InitDevice.c C:\Workspace\gyak4\inc/InitDevice.h \
+src/InitDevice.o: ../src/InitDevice.c \
+ C:\Users\student\Desktop\gyak4\inc/InitDevice.h \
  c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\emlib\inc\em_system.h \
  c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\device\siliconlabs\efm32gg\include\em_device.h \
  c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\device\siliconlabs\efm32gg\include\efm32gg990f1024.h \
@@ -63,9 +64,10 @@ src/InitDevice.o: ../src/InitDevice.c C:\Workspace\gyak4\inc/InitDevice.h \
  c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\emlib\inc\em_gpio.h \
  c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\emlib\inc\em_assert.h \
  c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\emlib\inc\em_gpio.h \
+ c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\emlib\inc\em_timer.h \
  c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\emlib\inc\em_usart.h
 
-C:\Workspace\gyak4\inc/InitDevice.h:
+C:\Users\student\Desktop\gyak4\inc/InitDevice.h:
 
 c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\emlib\inc\em_system.h:
 
@@ -194,5 +196,7 @@ c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\
 c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\emlib\inc\em_assert.h:
 
 c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\emlib\inc\em_gpio.h:
+
+c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\emlib\inc\em_timer.h:
 
 c:\siliconlabs\simplicitystudio\v4\developer\sdks\gecko_sdk_suite\v1.1\platform\emlib\inc\em_usart.h:

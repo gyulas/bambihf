@@ -20,6 +20,7 @@
 #include "em_chip.h"
 #include "em_assert.h"
 #include "em_gpio.h"
+#include "em_timer.h"
 #include "em_usart.h"
 // [Library includes]$
 
@@ -30,6 +31,7 @@ extern void enter_DefaultMode_from_RESET(void) {
 	// $[Config Calls]
 	CMU_enter_DefaultMode_from_RESET();
 	UART0_enter_DefaultMode_from_RESET();
+	TIMER0_enter_DefaultMode_from_RESET();
 	PORTIO_enter_DefaultMode_from_RESET();
 	// [Config Calls]$
 
@@ -88,6 +90,9 @@ extern void CMU_enter_DefaultMode_from_RESET(void) {
 	/* No LF peripherals enabled */
 	// [LF clock tree setup]$
 	// $[Peripheral Clock enables]
+	/* Enable clock for TIMER0 */
+	CMU_ClockEnable(cmuClock_TIMER0, true);
+
 	/* Enable clock for UART0 */
 	CMU_ClockEnable(cmuClock_UART0, true);
 
@@ -404,19 +409,23 @@ extern void LCD_enter_DefaultMode_from_RESET(void) {
 extern void TIMER0_enter_DefaultMode_from_RESET(void) {
 
 	// $[TIMER0 initialization]
+	TIMER_Init_TypeDef init = TIMER_INIT_DEFAULT;
+
+	init.enable = 1;
+	init.debugRun = 0;
+	init.dmaClrAct = 0;
+	init.sync = 0;
+	init.clkSel = timerClkSelHFPerClk;
+	init.prescale = timerPrescale1024;
+	init.fallAction = timerInputActionNone;
+	init.riseAction = timerInputActionNone;
+	init.mode = timerModeUp;
+	init.quadModeX4 = 0;
+	init.oneShot = 0;
+	init.count2x = 0;
+	init.ati = 0;
+	TIMER_Init(TIMER0, &init);
 	// [TIMER0 initialization]$
-
-	// $[TIMER0 CC0 init]
-	// [TIMER0 CC0 init]$
-
-	// $[TIMER0 CC1 init]
-	// [TIMER0 CC1 init]$
-
-	// $[TIMER0 CC2 init]
-	// [TIMER0 CC2 init]$
-
-	// $[TIMER0 DTI init]
-	// [TIMER0 DTI init]$
 
 }
 
